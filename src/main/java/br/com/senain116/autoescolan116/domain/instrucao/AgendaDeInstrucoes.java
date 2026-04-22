@@ -3,6 +3,7 @@ package br.com.senain116.autoescolan116.domain.instrucao;
 import br.com.senain116.autoescolan116.domain.aluno.Aluno;
 import br.com.senain116.autoescolan116.domain.aluno.AlunoNotFoundException;
 import br.com.senain116.autoescolan116.domain.aluno.AlunoRepository;
+import br.com.senain116.autoescolan116.domain.instrucao.validacao.DadosMotivoCancelamento;
 import br.com.senain116.autoescolan116.domain.instrucao.validacao.ValidadorAgendamento;
 import br.com.senain116.autoescolan116.domain.instrutor.Especialidade;
 import br.com.senain116.autoescolan116.domain.instrutor.Instrutor;
@@ -10,7 +11,9 @@ import br.com.senain116.autoescolan116.domain.instrutor.InstrutorNotFoundExcepti
 import br.com.senain116.autoescolan116.domain.instrutor.InstrutorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -60,5 +63,16 @@ public class AgendaDeInstrucoes {
                 dados.especialidade(),
                 dados.data()
         );
+    }
+
+    @Transactional
+    public DadosCancelamentoAgendamento cancelarInstrucao(DadosCancelamentoAgendamento dados) {
+        if (dados.motivoCancelamento() != null){
+            throw new DadosMotivoCancelamento("Informe o motivo do cancelamento");
+        }
+        if (dados.idInstrucao() != null){
+            throw new RuntimeException("Instrucao nao encontrada");
+        }
+        return null;
     }
 }
