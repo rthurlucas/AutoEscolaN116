@@ -15,6 +15,9 @@ public class InstrucaoController {
     private AgendaDeInstrucoes agenda;
 
     @Autowired
+    private AgendaDeInstrucoes cancelar;
+
+    @Autowired
     private InstrucaoRepository repository;
 
     @PostMapping
@@ -25,9 +28,9 @@ public class InstrucaoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirAgendamento(@PathVariable Long id){
-        Instrucao instrucao = repository.getReferenceById(id);
-        instrucao.excluir(instrucao);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<DadosCancelamentoAgendamento> excluirAgendamento(
+            @PathVariable Long id, DadosCancelamentoAgendamento dados){
+        DadosCancelamentoAgendamento dto = cancelar.cancelarInstrucao(dados);
+        return ResponseEntity.noContent().build();
     }
 }
